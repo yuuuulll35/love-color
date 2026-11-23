@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LOVE COLOR · 두 사람의 색 견본집</title>
+  <meta name="description" content="두 사람의 상징색과 사랑의 색을 뽑아 섞어 보는 OOC 결과 뷰어" />
+  <meta name="theme-color" content="#F8F7FA" />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=DM+Mono:wght@400;500&family=Gothic+A1:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;600;900&display=swap" />
+  <script>if (/^#r=[jz]/.test(location.hash)) document.documentElement.classList.add('from-link');</script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="home">
+  <div class="bg" aria-hidden="true">
+    <i class="bg-grain"></i>
+  </div>
+
+  <main class="home" id="home">
+    <header class="home-top"><span class="credit">@gimyunseul92364</span></header>
+    <div class="home-hero">
+      <h1 class="home-title"><span><b>Love</b></span><span><b><i>Color</i></b></span></h1>
+      <p class="home-sub">사람에게는 저마다의 빛깔이 있고,<br />누군가를 사랑하는 방식에도 빛깔이 있다.<br />네 빛이 번진 자리에, 둘의 색이 남는다.</p>
+    </div>
+
+    <section class="panel" aria-label="견본집 만들기">
+      <div class="blk step" data-step="pair" data-state="empty">
+        <div class="blk-head"><span class="blk-no">01</span><b>페어 이름</b><span class="status">선택 입력</span></div>
+        <p class="blk-desc">카드 제목이 돼요. 비우면 두 사람 이름으로.</p>
+        <div class="field"><input class="field-in" id="pairInput" type="text" maxlength="16" placeholder="예: 늦은 불빛" autocomplete="off" aria-label="페어 이름" aria-describedby="pairCount" /><span class="count" id="pairCount">0/16</span></div>
+      </div>
+
+      <div class="blk">
+        <div class="blk-head"><span class="blk-no">02</span><b>네 가지 색</b></div>
+        <p class="blk-desc">두 사람의 상징색과 사랑색을 뽑아요.</p>
+        <div class="tabs" role="tablist" aria-label="색을 뽑는 방법">
+          <button class="tab" role="tab" id="tabOoc" aria-controls="paneOoc" aria-selected="true" data-mode="ooc" type="button">OOC 입력</button>
+          <button class="tab" role="tab" id="tabDirect" aria-controls="paneDirect" aria-selected="false" data-mode="direct" type="button" tabindex="-1">직접 입력</button>
+        </div>
+
+        <div class="pane" id="paneOoc" role="tabpanel" aria-labelledby="tabOoc">
+          <div class="sub step" data-step="answer" data-state="empty">
+            <p class="sub-desc">OOC를 채팅에 보내고, 받은 답을 통째로 복사해 넣어요.</p>
+            <div class="acts" id="ansActs">
+              <button class="btn" type="button" data-act="copy">OOC 복사</button>
+              <span class="arrow" aria-hidden="true">→</span>
+              <button class="btn" type="button" data-act="paste">답 붙여넣기</button>
+            </div>
+            <textarea id="input" rows="5" spellcheck="false" placeholder="대상: NPC 이름 / PC 이름&#10;NPC 상징색: #RRGGBB · …" aria-label="채팅에서 받은 답" hidden></textarea>
+            <div class="ta-acts" id="taActs" hidden><button class="btn solid-sm" type="button" data-act="confirm">입력 완료</button><button class="link" type="button" data-act="cancel">닫기</button></div>
+            <div class="got" id="got" hidden><span id="gotText"></span><span class="got-links"><button class="link" type="button" data-act="redo">다시 넣기</button><button class="link" type="button" data-act="clear">지우기</button></span></div>
+            <p class="err" id="err" role="alert" hidden></p>
+            <div class="minor" id="minor">
+              <button class="link" type="button" data-act="manual">직접 붙여넣기</button>
+              <button class="link" type="button" data-act="peek" aria-expanded="false">OOC 내용 보기</button>
+            </div>
+            <pre class="prompt" id="promptView" hidden></pre>
+          </div>
+          <div class="sub step" data-step="colors" data-state="empty" hidden>
+            <div class="sub-head"><span class="blk-no">02-1</span><b>색상 보정</b><span class="status" id="colStatus"></span></div>
+            <p class="sub-desc">견본을 누르거나 코드를 적어 색을 고칠 수 있어요.</p>
+            <ul class="editor" id="editor"></ul>
+            <button class="link" type="button" id="colReset" hidden>원래 색으로</button>
+          </div>
+        </div>
+
+        <div class="pane" id="paneDirect" role="tabpanel" aria-labelledby="tabDirect" hidden>
+          <div class="sub step" data-step="dnames" data-state="empty">
+            <div class="sub-head"><span class="blk-no">02-1</span><b>캐릭터명</b></div>
+            <div class="name-pair">
+              <div class="field"><input class="field-in" id="dA" type="text" maxlength="12" placeholder="캐릭터 1" autocomplete="off" aria-label="첫 번째 캐릭터 이름" aria-describedby="dAcount nameErr" /><span class="count" id="dAcount">0/12</span></div>
+              <span aria-hidden="true">&amp;</span>
+              <div class="field"><input class="field-in" id="dB" type="text" maxlength="12" placeholder="캐릭터 2" autocomplete="off" aria-label="두 번째 캐릭터 이름" aria-describedby="dBcount nameErr" /><span class="count" id="dBcount">0/12</span></div>
+            </div>
+            <p class="field-err" id="nameErr" role="alert" hidden></p>
+          </div>
+          <div class="sub step" data-step="dcolors" data-state="empty">
+            <div class="sub-head"><span class="blk-no">02-2</span><b>색상 선택</b></div>
+            <p class="sub-desc">왼쪽 견본을 눌러 색을 고르고, 원하면 색에 이름을 붙여요.</p>
+            <ul class="editor direct" id="dEditor"></ul>
+            <div class="mix-in">
+              <div class="mix-head">
+                <span>혼합색 비율</span>
+                <button class="tip-btn" id="mixTipBtn" type="button" aria-expanded="false" aria-controls="mixTip" aria-label="혼합색 비율 설명">?</button>
+                <p class="tip" id="mixTip" hidden>견본집 끝에 나오는 <b>혼합색</b>은 두 사람의 <b>사랑색</b> 두 가지만 섞어서 만들어요. 상징색은 섞지 않아요. 막대를 한쪽으로 옮길수록 그쪽 사람의 사랑색이 더 많이 들어가요.</p>
+              </div>
+              <div class="mix-preview" aria-hidden="true">
+                <span class="mp" data-mp="a"><i></i><em id="mpA"></em></span>
+                <span class="mp mid"><i></i><em>혼합색</em></span>
+                <span class="mp" data-mp="b"><i></i><em id="mpB"></em></span>
+              </div>
+              <input type="range" id="dRatio" min="0" max="100" value="50" aria-label="혼합색에 들어갈 두 사랑색의 비율" />
+            </div>
+          </div>
+          <div class="sub step" data-step="dline" data-state="empty">
+            <div class="sub-head"><span class="blk-no">02-3</span><b>한 줄 문구</b><span class="status">선택 입력</span></div>
+            <p class="sub-desc">결과 첫 화면에 놓이는 문장이에요. 비우면 두 색에 맞춰 자동으로 들어가요.</p>
+            <div class="field"><input class="field-in" id="dLine" type="text" maxlength="40" autocomplete="off" aria-label="한 줄 문구" aria-describedby="dLineCount" /><span class="count" id="dLineCount">0/40</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="go">
+        <p class="field-err go-err" id="goErr" role="alert" hidden></p>
+        <button class="btn solid" id="openBtn" type="button">견본집 펼치기</button>
+        <button class="link" id="exampleBtn" type="button">예시로 보기</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="result" id="result" hidden></div>
+
+  <div class="loader" id="loader" role="status" aria-live="polite"><p>견본집 펼치는 중</p><i></i></div>
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
